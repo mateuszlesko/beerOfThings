@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+   <ItemGroup>
+        <UpToDateCheckBuilt Include="postcss.config.js" Set="Css" />
+        <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
+    </ItemGroup>
+
+   <ItemGroup>
+     <Folder Include="wwwroot\Nowy folder\" />
+   </ItemGroup>
+
+    <Target Name="Tailwind" BeforeTargets="Build">
+        <Exec Command="npm run css:build" />
+    </Target>
+
+</Project>
