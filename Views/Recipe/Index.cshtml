@@ -1,9 +1,8 @@
-﻿@model IEnumerable<beerOfThings.Models.Ingredient>
+﻿@model System.Collections.Generic.List<beerOfThings.Models.Recipe>;
 
 @{
-    ViewData["Title"] = "Index";
-}
 
+}
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,16 +11,23 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @*@Html.DisplayNameFor(model => model.Name)*@
+                Nazwa:
             </th>
-            <th></th>
+            <th>
+                Gatunek:
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -29,6 +35,6 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
