@@ -14,7 +14,9 @@ namespace beerOfThings.Models
 
         public int Id { get; set; }
         public int? Value { get; set; }
+        public int? StageId { get; set; }
 
+        public virtual Stage Stage { get; set; }
         public virtual ICollection<Stage> Stages { get; set; }
     }
 }

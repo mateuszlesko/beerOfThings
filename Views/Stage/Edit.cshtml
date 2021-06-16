@@ -1,0 +1,32 @@
+﻿@{
+    @model beerOfThings.Models.Stage;
+}
+
+@{
+    ViewData["Title"] = "Edytuj";
+}
+
+<h1>Edit</h1>
+
+<h4>Etap procesu</h4>
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Minutes" class="control-label"></label>
+        <input asp-for="Minutes" class="form-control" />
+        <span asp-validation-for="Minutes" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

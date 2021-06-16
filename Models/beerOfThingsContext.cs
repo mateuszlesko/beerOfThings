@@ -29,11 +29,7 @@ namespace beerOfThings.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=beerOfThings;Trusted_Connection=True;");
-//            }
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -90,6 +86,7 @@ namespace beerOfThings.Models
                 entity.HasNoKey();
 
                 entity.ToTable("Ingredients");
+                entity.ToTable("Ingredients");
 
                 entity.Property(e => e.Amount).HasColumnName("amount");
 
@@ -119,7 +116,14 @@ namespace beerOfThings.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.StageId).HasColumnName("stageId");
+
                 entity.Property(e => e.Value).HasColumnName("value");
+
+                entity.HasOne(d => d.Stage)
+                    .WithMany(p => p.OptimalTemperatures)
+                    .HasForeignKey(d => d.StageId)
+                    .HasConstraintName("FK_OptimalTemperatureStage");
             });
 
             modelBuilder.Entity<Recipe>(entity =>
