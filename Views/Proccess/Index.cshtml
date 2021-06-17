@@ -1,0 +1,18 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model beerOfThings.ViewModels.ProccessDetails
+@{
+   
+    <h2>@Model.recipe.Name</h2>
+
+    <h3>Obecny etap:</h3>
+    <p> </p>
+
+    <h3>Reszta etapów:</h3>
+    
+    @*foreach(beerOfThings.Models.Brewing brewing in Model.brewing)
+    {
+        <p> @brewing.Stage.Name : @brewing.Stage.OptimalTemperature °C</p>
+    }*@
+}

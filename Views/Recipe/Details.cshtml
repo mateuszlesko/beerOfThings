@@ -1,0 +1,87 @@
+﻿@{
+    @model beerOfThings.ViewModels.RecipeFullDetailsViewModel;
+    ViewData["Title"] = Model.recipe.Name;
+}
+
+<h1>@Model.recipe.Name</h1>
+
+<h3>Składniki:</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nazwa składnika:
+            </th>
+            <th>
+                Ilość:
+            </th>
+            <th>
+                Jednostka:
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ingredientsList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ingredient.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Entity)
+                </td>
+                <td>
+                    <a asp-controller = "Ingredients" asp-action="Details" asp-route-id="@item.IngredientId">Details</a> |
+                </td>
+                <td>
+                    <a asp-controller = "IngredientsList" asp-action="Edit" asp-route-id="@item.IngredientId,@item.RecipeId">Edytuj przepis</a> |
+                </td>
+                @*<td>
+                       
+                        |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
+<h3>Warzenie:</h3>
+<table class="table auto">
+    <thead>
+        <tr>
+            <th>
+                Nazwa procesu:
+            </th>
+            <th>
+                Temperatura:
+            </th>
+            <th>
+                Czas:
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.brewingProccess)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stage.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stage.OptimalTemperature) °C
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stage.Minutes) minut
+            </td>
+
+            <td>
+                <a asp-controller="Stage" asp-action="Edit" asp-route-id="@item.Stage.Id">Edytuj etap</a> |
+                <a asp-controller="Stage" asp-action="Delete" asp-route-id="@item.Stage.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
