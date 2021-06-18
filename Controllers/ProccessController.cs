@@ -20,20 +20,28 @@ namespace beerOfThings.Controllers
         }
 
 
-        public async Task<IActionResult> History() 
+        public async Task<IActionResult> Index() 
         {
-            List<WarmingHistory> histories = await _context.WarmingHistories.Include(history => history.Recipe).ToListAsync();
+            IEnumerable<WarmingHistory> histories = await _context.WarmingHistories.Include(history => history.Recipe).ToListAsync();
 
             return View(histories);
         }
 
-        public IActionResult Index(beerOfThings.ViewModels.ProccessDetails proccess)
+        public async Task<IActionResult> Current(int recipeId)
         {
-            if (ViewData["currentProccess"] == null) 
+            List<Brewing> brewing = await _context.Brewings.Include(b => b.Stage).Where(b => b.RecipeId == recipeId).ToListAsync();
+
+            Recipe recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == recipeId);
+            
+            if (recipe == null) 
             {
-                RedirectToAction("Create");
+                NotFound();
             }
 
+            beerOfThings.ViewModels.ProccessDetails proccess = new beerOfThings.ViewModels.ProccessDetails()
+            {
+                brewing = brewing
+            };
 
             return View(proccess);
         }
@@ -47,24 +55,10 @@ namespace beerOfThings.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("RecipeId")] WarmingHistory warming) 
         {
-            _context.Add(warming);
-            List<Brewing> brewing = await _context.Brewings.Include(b => b.Stage).Where(b => b.RecipeId == warming.RecipeId).ToListAsync();
-            Recipe recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == warming.RecipeId);
-
-            CookieOptions cookieOptions = new CookieOptions();
-            cookieOptions.Expires = new DateTimeOffset(DateTime.Now.AddHours(8));
-
-            HttpContext.Response.Cookies.Append("currentRecipe", recipe.Id.ToString(),cookieOptions);
-            HttpContext.Response.Cookies.Append("currentStage", brewing[0].StageId.ToString(), cookieOptions);
-            HttpContext.Response.Cookies.Append("lastStage", brewing[brewing.Count - 1].StageId.ToString(), cookieOptions);
-
-            beerOfThings.ViewModels.ProccessDetails proccess = new beerOfThings.ViewModels.ProccessDetails()
-            {
-                recipe = recipe,
-                brewing = brewing
-            };
-
-            return RedirectToAction("Index",proccess);
+            _context.WarmingHistories.Add(warming);
+            await _context.SaveChangesAsync();
+           
+            return RedirectToAction("Current",warming.RecipeId);
 
         }
     }

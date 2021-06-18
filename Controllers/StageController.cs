@@ -63,13 +63,6 @@ namespace beerOfThings.Controllers
             return View(stage);
         }
 
-
-        public async Task<ActionResult> Recent()
-        {
-
-            return View();
-        }
-
         private bool StageExists(int id)
         {
             return _context.Stages.Any(e => e.Id == id);

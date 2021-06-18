@@ -1,18 +1,34 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model beerOfThings.ViewModels.ProccessDetails
-@{
-   
-    <h2>@Model.recipe.Name</h2>
+﻿@model IEnumerable<beerOfThings.Models.WarmingHistory>;
 
-    <h3>Obecny etap:</h3>
-    <p> </p>
 
-    <h3>Reszta etapów:</h3>
-    
-    @*foreach(beerOfThings.Models.Brewing brewing in Model.brewing)
-    {
-        <p> @brewing.Stage.Name : @brewing.Stage.OptimalTemperature °C</p>
-    }*@
-}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Name)*@
+                Nazwa:
+            </th>
+            <th>
+                Akcje:
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (beerOfThings.Models.WarmingHistory item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Recipe.Name)
+                    </td>
+                    <td>
+                 
+                        <a asp-controller = "Recipe" asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |
+                        
+                    </td>
+                </tr>
+            }
+        </tbody>
+</table>
+
+
