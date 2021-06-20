@@ -1,0 +1,45 @@
+﻿@model beerOfThings.ViewModels.RecipeIndexVM;
+
+<div>
+    <form id="fitringRecipes" asp-action="Index" asp-controller="Recipe">
+        <select id="categoryPicker">
+            
+                @foreach(Category category in Model.categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            
+        </select>
+       <button type="button" onclick="RecipeFiltring()">Filtruj receptury</button>
+    </form>
+</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Name)*@
+                Nazwa:
+            </th>
+            <th>
+                Gatunek:
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.recipes)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

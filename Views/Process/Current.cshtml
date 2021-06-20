@@ -1,0 +1,66 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model beerOfThings.ViewModels.ProcessDetails;
+
+@{ int current = System.Convert.ToInt32(Context.Request.Cookies["currentState"]); }
+@{ int end = System.Convert.ToInt32(Context.Request.Cookies["endState"]); }
+@{
+    <h1>@Model.recipe.Name</h1>
+
+    @if (current < end)
+    {
+        <p>
+            <span>Obecny etap : @Model.brewing[current].Stage.Name</span>
+        </p>
+        <p>
+            <span>Temperatura: @Model.brewing[current].Stage.OptimalTemperature </span>
+        </p>
+        <p>
+            <span>Czas : @Model.brewing[current].Stage.Minutes minut</span>
+        </p>
+        <a href="/Process/Next"> Dalej </a>
+        <a href="/Process/Previous">Poprzedni</a>
+    }
+    else if (current >= end)
+    {
+        <h2>Skończono proces</h2>
+    }
+    else
+    {
+        <h2>BłĄD</h2>
+    }
+}
+
+<canvas id="myChart" width="400" height="400"></canvas>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    data: Utils.numbers(NUMBER_CFG),
+                    borderColor: Utils.CHART_COLORS.red,
+                    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
+                },
+                {
+                    label: 'Dataset 2',
+                    data: Utils.numbers(NUMBER_CFG),
+                    borderColor: Utils.CHART_COLORS.blue,
+                    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
+                }
+            ],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

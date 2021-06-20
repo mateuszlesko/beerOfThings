@@ -1,0 +1,35 @@
+﻿@model IEnumerable<beerOfThings.Models.WarmingHistory>;
+
+
+<a href="Process/Create">Waż piwo</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Name)*@
+                Nazwa:
+            </th>
+            <th>
+                Akcje:
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (beerOfThings.Models.WarmingHistory item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Recipe.Name)
+                    </td>
+                    <td>
+                 
+                        <a asp-controller = "Recipe" asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |
+                        
+                    </td>
+                </tr>
+            }
+        </tbody>
+</table>
+
+
