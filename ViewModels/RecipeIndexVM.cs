@@ -6,9 +6,9 @@ using beerOfThings.Models;
 
 namespace beerOfThings.ViewModels
 {
-    public class ProccessDetails
+    public class RecipeIndexVM
     {
-       public Recipe recipe;
-       public List<Brewing> brewing;
+        public List<Category> categories;
+        public List<Recipe> recipes; 
     }
 }

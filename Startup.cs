@@ -48,6 +48,7 @@ namespace beerOfThings
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCookiePolicy();
             app.UseSession();
             app.UseAuthorization();
 

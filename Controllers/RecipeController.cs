@@ -18,10 +18,27 @@ namespace beerOfThings.Controllers
             _context = context;
         }
 
-        public async Task<ActionResult> Index()
+
+        public async Task<ActionResult> Index([Bind("category")] int? category)
         {
-            List<Recipe> recipes = await _context.Recipes.ToListAsync();
-            return View(recipes);
+
+            List<Recipe> recipes = new List<Recipe>();
+            if (category == null) 
+            {
+                recipes = await _context.Recipes.ToListAsync();
+            }
+            else
+            {
+                recipes = await _context.Recipes.Where(recipe => recipe.CategoryId == category).ToListAsync();
+            }   
+            List<Category> categories = await _context.Categories.ToListAsync();
+
+            RecipeIndexVM indexVM = new RecipeIndexVM()
+            {
+                recipes = recipes,
+                categories = categories
+            };
+            return View(indexVM);
         }
 
         public ActionResult Details(int? id)

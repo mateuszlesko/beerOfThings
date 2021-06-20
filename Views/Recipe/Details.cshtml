@@ -18,6 +18,9 @@
             <th>
                 Jednostka:
             </th>
+            <th>
+                Akcja:
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -36,14 +39,6 @@
                 <td>
                     <a asp-controller = "Ingredients" asp-action="Details" asp-route-id="@item.IngredientId">Details</a> |
                 </td>
-                <td>
-                    <a asp-controller = "IngredientsList" asp-action="Edit" asp-route-id="@item.IngredientId,@item.RecipeId">Edytuj przepis</a> |
-                </td>
-                @*<td>
-                       
-                        |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>*@
             </tr>
         }
     </tbody>

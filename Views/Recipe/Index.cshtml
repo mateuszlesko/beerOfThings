@@ -1,12 +1,22 @@
-﻿@model System.Collections.Generic.List<beerOfThings.Models.Recipe>;
+﻿@model beerOfThings.ViewModels.RecipeIndexVM;
 
-@{
-
-}
-
+<div>
+    <form id="fitringRecipes" asp-action="Index" asp-controller="Recipe">
+        <select id="categoryPicker">
+            
+                @foreach(Category category in Model.categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            
+        </select>
+       <button type="button" onclick="RecipeFiltring()">Filtruj receptury</button>
+    </form>
+</div>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -20,22 +30,14 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.recipes)
         {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
         }
