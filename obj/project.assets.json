@@ -8788,11 +8788,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mateusz\\source\\repos\\beerOfThings\\beerOfThings.csproj",
+      "projectUniqueName": "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\beerOfThings.csproj",
       "projectName": "beerOfThings",
-      "projectPath": "C:\\Users\\mateusz\\source\\repos\\beerOfThings\\beerOfThings.csproj",
+      "projectPath": "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\beerOfThings.csproj",
       "packagesPath": "C:\\Users\\mateusz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mateusz\\source\\repos\\beerOfThings\\obj\\",
+      "outputPath": "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mateusz\\AppData\\Roaming\\NuGet\\NuGet.Config",

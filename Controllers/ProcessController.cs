@@ -30,7 +30,7 @@ namespace beerOfThings.Controllers
         public IActionResult Current()
         {
            
-            int recipeId = int.Parse(Request.Cookies["recipe"]);
+            int recipeId = Request.Cookies["recipe"] == null ? 0 : int.Parse(Request.Cookies["recipe"]);
 
             if (recipeId == 0)
             {
