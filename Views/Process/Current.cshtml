@@ -15,13 +15,13 @@
             <span>Obecny etap : @Model.brewing[current].Stage.Name</span>
         </p>
         <p>
-            <span>Temperatura: @Model.brewing[current].Stage.OptimalTemperature </span>
+            <span>Temperatura: @Model.brewing[current].Stage.OptimalTemperature °C</span>
         </p>
         <p>
             <span>Czas : @Model.brewing[current].Stage.Minutes minut</span>
         </p>
-        <a href="/Process/Next"> Dalej </a>
-        <a href="/Process/Previous">Poprzedni</a>
+        <a class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="/Process/Previous">Poprzedni</a>
+        <a class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"href="/Process/Next"> Dalej </a>
     }
     else if (current >= end)
     {
@@ -33,33 +33,35 @@
     }
 }
 
-<canvas id="myChart" width="400" height="400"></canvas>
+<canvas id="line-chart" width="800" height="450"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
+    losowo = new Array();
+    for (var i = 0; i < 10; i++) {
+        losowo.push(Math.round(Math.random() * 80));
+    }
+
+    new Chart(document.getElementById("line-chart"), {
         type: 'line',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [
-                {
-                    label: 'Dataset 1',
-                    data: Utils.numbers(NUMBER_CFG),
-                    borderColor: Utils.CHART_COLORS.red,
-                    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
-                },
-                {
-                    label: 'Dataset 2',
-                    data: Utils.numbers(NUMBER_CFG),
-                    borderColor: Utils.CHART_COLORS.blue,
-                    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
-                }
-            ],
+            labels: [20, 30, 40, 50, 60, 70, 18, 90, 110, 120],
+            datasets: [{
+                data: [66, 66, 66, 68, 70, 71, 73, 73, 78, 78],
+                label: "Optymalna temperatura",
+                borderColor: "#3e95cd",
+                fill: false
+            }, {
+                data: losowo,
+                label: "Temperatura z czujnika",
+                borderColor: "#8e5ea2",
+                fill: false
+            }
+            ]
         },
         options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+            title: {
+                display: true,
+                text: 'Proces grzania'
             }
         }
     });

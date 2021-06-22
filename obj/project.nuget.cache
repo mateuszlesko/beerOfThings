@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8HFVUdjlE5EtANAXXbf/BY829kk8BpogwTDImZ7TClNE8fzNC1IUZml3auFMxN2oaFpsJCLF/xhxzuoRV3qk3w==",
+  "dgSpecHash": "QignCs4j/NUBPwQZzwwg2XQ6nOO03HBzhVQt50xHq3zBdz+u71Q1CsRdd5k0NL4oUuJhmzuFenxSLB0qjQTdTw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mateusz\\source\\repos\\beerOfThings\\beerOfThings.csproj",
+  "projectFilePath": "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\beerOfThings.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mateusz\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\mateusz\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
