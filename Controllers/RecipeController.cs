@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using beerOfThings.Models;
 using beerOfThings.ViewModels;
+using beerOfThings.Helpers;
 
 namespace beerOfThings.Controllers
 {
@@ -18,6 +19,11 @@ namespace beerOfThings.Controllers
             _context = context;
         }
 
+
+        public IActionResult Error()
+        {
+            return View();
+        }
 
         public async Task<ActionResult> Index([Bind("category")] int? category)
         {
@@ -69,6 +75,87 @@ namespace beerOfThings.Controllers
             };
 
             return View(recipeFullDetails);
+        }
+
+        //GET: Recipe/Create
+        public async Task<IActionResult> Create()
+        {
+            RecipeCreationVM recipeCreation = new RecipeCreationVM();
+            recipeCreation.SetCategories(await _context.Categories.ToListAsync());
+            return View(recipeCreation);
+        }
+
+        [HttpPost]
+        public IActionResult Create([Bind("Name,CategoryId")] RecipeCreationVM creationVM ) 
+        {
+          
+            Recipe recipe = new Recipe();
+            recipe.CategoryId = creationVM.CategoryId;
+            recipe.Category = _context.Categories.Where(category => category.Id == creationVM.CategoryId).FirstOrDefault();
+            recipe.Name = creationVM.Name.Equals(null) ? "receptura bez nazwy" : creationVM.Name;
+           
+            _context.Recipes.Add(recipe);
+            _context.SaveChanges();
+
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "CreatedRecipeId", recipe.Id);
+
+            return RedirectToAction("AddIngredientToRecipe");
+        }
+
+        public async Task<IActionResult> AddIngredientToRecipe() 
+        {
+
+            int recipeId = SessionHelper.GetObjectFromJson<int>(HttpContext.Session, "CreatedRecipeId");
+
+            if(recipeId == 0)
+            {
+               return RedirectToAction("Error");
+            }
+
+            RecipeIngredientVM ingredientVM = new RecipeIngredientVM();
+            ingredientVM.SetIngredientsList(await _context.Ingredients.ToListAsync());
+           // ingredientVM. = await _context.Recipes.Where(recipe => recipe.Id == recipeId).FirstOrDefaultAsync();
+
+            return View(ingredientVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddIngredientToRecipe([Bind("IngredientId,Amount,Entity")] RecipeIngredientVM ingredientVM)
+        {
+            int recipeId = SessionHelper.GetObjectFromJson<int>(HttpContext.Session, "CreatedRecipeId");
+            if (recipeId == 0 || ingredientVM.IngredientId == 0)
+            {
+                return RedirectToAction("Error");
+            }
+
+            Recipe recipe = await _context.Recipes.Where(r => r.Id == recipeId).FirstOrDefaultAsync();
+            Ingredient ingredient = await _context.Ingredients.Where(i => i.Id == ingredientVM.IngredientId).FirstOrDefaultAsync();
+
+            IngredientsList ingredientsList = new IngredientsList();
+
+            if(recipe.Equals(null) || ingredient.Equals(null))
+            {
+                return RedirectToAction("Error");
+            }
+
+            ingredientsList.Recipe = recipe;
+            ingredientsList.RecipeId = recipeId;
+            ingredientsList.IngredientId = ingredientVM.IngredientId;
+            ingredientsList.Ingredient = ingredient;
+            ingredientsList.Entity = ingredientVM.Entity;
+            ingredientsList.Amount = ingredientVM.Amount;
+
+            _context.Add(ingredientsList);
+
+            _context.SaveChanges();
+
+            return RedirectToAction("MoveToRecipeStage", recipe);
+        }
+
+
+        public IActionResult MoveToRecipeStage(Recipe recipe)
+        {
+            return View(recipe);
         }
     }
 }

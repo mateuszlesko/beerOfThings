@@ -29,6 +29,7 @@ namespace beerOfThings
                 options.IdleTimeout = TimeSpan.FromHours(8);// usatwione na tyle ile trwa dzien roboczy   
             });
             services.AddControllersWithViews();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,6 +5,7 @@
 
 <h1>@Model.recipe.Name</h1>
 
+
 <h3>Składniki:</h3>
 <table class="table">
     <thead>
@@ -37,7 +38,7 @@
                     @Html.DisplayFor(modelItem => item.Entity)
                 </td>
                 <td>
-                    <a asp-controller = "Ingredients" asp-action="Details" asp-route-id="@item.IngredientId">Details</a> |
+                    <a asp-controller = "Ingredients" asp-action="Details" asp-route-id="@item.IngredientId">Szczegóły</a> |
                 </td>
             </tr>
         }
@@ -74,7 +75,7 @@
 
             <td>
                 <a asp-controller="Stage" asp-action="Edit" asp-route-id="@item.Stage.Id">Edytuj etap</a> |
-                <a asp-controller="Stage" asp-action="Delete" asp-route-id="@item.Stage.Id">Delete</a>
+                <a asp-controller="Stage" asp-action="Delete" asp-route-id="@item.Stage.Id">Usuń</a>
             </td>
         </tr>
         }
