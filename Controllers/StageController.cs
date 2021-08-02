@@ -3,19 +3,71 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using beerOfThings.Models;
-using beerOfThings.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using beerOfThings.ViewModels;
+using beerOfThings.Models;
+using beerOfThings.Helpers;
+using beerOfThings.Controllers.Interfaces;
 
 namespace beerOfThings.Controllers
 {
-    public class StageController : Controller
+    public class StageController : Controller, IStageController
     {
-        private readonly beerOfThingsContext _context;
-        public StageController(beerOfThingsContext context) 
+        private readonly BeerOfThingsContext _context;
+        public StageController(BeerOfThingsContext context) 
         {
             _context = context;
         }
+
+        public IActionResult MoveNext()
+        {
+
+            return View();
+        }
+
+        public async Task<IActionResult> Create() 
+        {
+            StageCreationVM creationVM = new StageCreationVM();
+            int recipeId = SessionHelper.GetObjectFromJson<int>(HttpContext.Session, "CreatedRecipeId");
+            Recipe recipe = await _context.Recipes.Where(_recipe => _recipe.Id == recipeId).FirstOrDefaultAsync();
+            creationVM.setRecipeName(recipe.Name); 
+            return View(creationVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("StageName,Minutes,Temperature")] StageCreationVM stageCreationVM) 
+        {
+
+            int recipeId = SessionHelper.GetObjectFromJson<int>(HttpContext.Session, "CreatedRecipeId");
+            if(recipeId == 0)
+            {
+                return RedirectToAction("Error");
+            }
+
+            Stage stage = new Stage();
+            stage.Name = stageCreationVM.StageName;
+            stage.Minutes = stageCreationVM.Minutes;
+            stage.OptimalTemperature = stageCreationVM.Temperature;
+            
+            _context.Add(stage);
+
+            Recipe recipe = await _context.Recipes.Where(r => r.Id == recipeId).FirstOrDefaultAsync();
+            
+            Brewing brewing = new Brewing();
+
+            brewing.Recipe = recipe;
+            brewing.RecipeId = recipeId;
+            brewing.Stage = stage;
+            brewing.StageId = stage.Id;
+
+            _context.Add(brewing);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("MoveNext");
+        }
+
+       
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -35,7 +87,7 @@ namespace beerOfThings.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Minutes,OptimalTemperature")] Stage stage)
+        public IActionResult Edit(int id, [Bind("Id,Name,Minutes,OptimalTemperature")] Stage stage)
         {
             if (id != stage.Id)
             {
@@ -45,7 +97,7 @@ namespace beerOfThings.Controllers
             try
             {
                 _context.Update(stage);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {

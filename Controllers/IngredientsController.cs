@@ -6,14 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using beerOfThings.Models;
+using beerOfThings.ViewModels;
 
+using beerOfThings.Controllers.Interfaces;
 namespace beerOfThings.Controllers
 {
-    public class IngredientsController : Controller
+    public class IngredientsController : Controller, IIngredientsController
     {
-        private readonly beerOfThingsContext _context;
+        private readonly BeerOfThingsContext _context;
 
-        public IngredientsController(beerOfThingsContext context)
+        public IngredientsController(BeerOfThingsContext context)
         {
             _context = context;
         }
@@ -39,7 +41,14 @@ namespace beerOfThings.Controllers
                 return NotFound();
             }
 
-            return View(ingredient);
+            List<IngredientsList> ingredientsList = await _context.IngredientsLists.Include(i => i.Recipe).Where(recipe => recipe.IngredientId == id).ToListAsync();
+
+            List<Recipe> recipes = (from list in ingredientsList select list.Recipe).ToList<Recipe>();
+
+            IngredientDetailsVM detailsVM = new IngredientDetailsVM() { ingredient = ingredient, recipes = recipes};
+
+
+            return View(detailsVM);
         }
 
         // GET: Ingredients/Create

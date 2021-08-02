@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\beerOfThings.csproj": {}
+    "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\beerOfThings.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\beerOfThings.csproj": {
+    "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\beerOfThings.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\beerOfThings.csproj",
+        "projectUniqueName": "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\beerOfThings.csproj",
         "projectName": "beerOfThings",
-        "projectPath": "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\beerOfThings.csproj",
+        "projectPath": "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\beerOfThings.csproj",
         "packagesPath": "C:\\Users\\mateusz\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\obj\\",
+        "outputPath": "C:\\Users\\mateusz\\source\\repos\\LeśkoMateuszBazaDanychProjekt\\LeśkoMateuszBazaDanychProjekt\\beerOfThings\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mateusz\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -60,6 +60,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[5.0.2, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
             }
           },
           "imports": [

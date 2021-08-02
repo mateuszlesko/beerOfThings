@@ -6,14 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using beerOfThings.Models;
+using beerOfThings.Controllers.Interfaces;
 
 namespace beerOfThings.Controllers
 {
-    public class CategoriesController : Controller
+    public class CategoriesController : Controller, ICategoriesController
     {
-        private readonly beerOfThingsContext _context;
+        private readonly BeerOfThingsContext _context;
 
-        public CategoriesController(beerOfThingsContext context)
+        public CategoriesController(BeerOfThingsContext context)
         {
             _context = context;
         }

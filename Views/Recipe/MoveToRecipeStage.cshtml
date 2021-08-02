@@ -1,0 +1,20 @@
+﻿
+@model beerOfThings.Models.Recipe
+
+<h1>@Model.Name</h1>
+
+<div class="flex">
+    <div class="flex-initial">
+        <a href="/Recipe/Index">Wszystkie receptury</a>
+    </div>
+    <div class="flex-initial">
+        <a href="/Recipe/Details?Id=@Model.Id">Szczegóły</a>
+    </div>
+    <div class="flex-initial">
+        <a href="/Recipe/AddIngredientToRecipe">Dodaj składnik</a>
+    </div>
+    <div class="flex-initial">
+        <a href="/Stage/Create">Dodaj etap</a>
+    </div>
+</div>
+

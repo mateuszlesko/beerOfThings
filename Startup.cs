@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using beerOfThings.Controllers;
+using beerOfThings.Controllers.Interfaces;
+
 namespace beerOfThings
 {
     public class Startup
@@ -24,11 +27,21 @@ namespace beerOfThings
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<beerOfThings.Models.beerOfThingsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<beerOfThings.Models.BeerOfThingsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromHours(8);// usatwione na tyle ile trwa dzien roboczy   
             });
+            //singleton = objects are the same for every obejct and every request
+            //scoped = objects are the same with a request but diffrent across different requests
+            //transient = new objects are created with every request
+
+            services.AddSingleton<ICategoriesController, CategoriesController>();
+            services.AddSingleton<IIngredientsController, IngredientsController>();
+            services.AddTransient<IRecipeController, RecipeController>();
+            services.AddTransient<IStageController, StageController>();
+
             services.AddControllersWithViews();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
