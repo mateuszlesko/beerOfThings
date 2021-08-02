@@ -11,9 +11,9 @@ namespace beerOfThings.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly beerOfThingsContext _context;
+        private readonly BeerOfThingsContext _context;
 
-        public CategoriesController(beerOfThingsContext context)
+        public CategoriesController(BeerOfThingsContext context)
         {
             _context = context;
         }
