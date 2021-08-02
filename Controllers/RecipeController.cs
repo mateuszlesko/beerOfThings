@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using beerOfThings.Models;
 using beerOfThings.ViewModels;
 using beerOfThings.Helpers;
+using beerOfThings.Controllers.Interfaces;
 
 namespace beerOfThings.Controllers
 {
-    public class RecipeController : Controller
+    public class RecipeController : Controller, IRecipeController
     {
         private readonly BeerOfThingsContext _context;
 
@@ -47,7 +48,7 @@ namespace beerOfThings.Controllers
             return View(indexVM);
         }
 
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -55,15 +56,15 @@ namespace beerOfThings.Controllers
                 return NotFound();
             }
 
-            Recipe recipe = _context.Recipes.FirstOrDefault(recipe => recipe.Id == id);
+            Recipe recipe = await _context.Recipes.FirstOrDefaultAsync(recipe => recipe.Id == id);
 
             if (recipe == null)
             {
                 return NotFound();
             }
 
-            List<IngredientsList> ingredientsList = _context.IngredientsLists.Include(Ingredient => Ingredient.Ingredient).Where(list => list.RecipeId == id).ToList();
-            List<Brewing> brewingList = _context.Brewings.Include(Stage => Stage.Stage).Where(brewing => brewing.RecipeId == id).ToList();
+            List<IngredientsList> ingredientsList = await _context.IngredientsLists.Include(Ingredient => Ingredient.Ingredient).Where(list => list.RecipeId == id).ToListAsync();
+            List<Brewing> brewingList = await _context.Brewings.Include(Stage => Stage.Stage).Where(brewing => brewing.RecipeId == id).ToListAsync();
 
 
 

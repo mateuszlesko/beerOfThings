@@ -7,10 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using beerOfThings.ViewModels;
 using beerOfThings.Models;
 using beerOfThings.Helpers;
+using beerOfThings.Controllers.Interfaces;
 
 namespace beerOfThings.Controllers
 {
-    public class StageController : Controller
+    public class StageController : Controller, IStageController
     {
         private readonly BeerOfThingsContext _context;
         public StageController(BeerOfThingsContext context) 
@@ -86,7 +87,7 @@ namespace beerOfThings.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Minutes,OptimalTemperature")] Stage stage)
+        public IActionResult Edit(int id, [Bind("Id,Name,Minutes,OptimalTemperature")] Stage stage)
         {
             if (id != stage.Id)
             {
@@ -96,7 +97,7 @@ namespace beerOfThings.Controllers
             try
             {
                 _context.Update(stage);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
