@@ -27,7 +27,8 @@ namespace beerOfThings
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<beerOfThings.Models.BeerOfThingsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllersWithViews();
+
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromHours(8);// usatwione na tyle ile trwa dzien roboczy   
             });
@@ -35,13 +36,12 @@ namespace beerOfThings
             //scoped = objects are the same with a request but diffrent across different requests
             //transient = new objects are created with every request
 
-            services.AddSingleton<ICategoriesController, CategoriesController>();
-            services.AddSingleton<IIngredientsController, IngredientsController>();
-            services.AddTransient<IRecipeController, RecipeController>();
-            services.AddTransient<IStageController, StageController>();
+            _ = services.AddScoped<ICategoriesController, CategoriesController>();
+            _ = services.AddScoped<IIngredientsController, IngredientsController>();
+            _ = services.AddTransient<IRecipeController, RecipeController>();
+            _ = services.AddTransient<IStageController, StageController>();
+            services.AddDbContext<beerOfThings.Models.BeerOfThingsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllersWithViews();
-            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

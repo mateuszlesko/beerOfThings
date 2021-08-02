@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using beerOfThings.Models;
 using beerOfThings.ViewModels;
-
 using beerOfThings.Controllers.Interfaces;
+
 namespace beerOfThings.Controllers
 {
     public class IngredientsController : Controller, IIngredientsController
