@@ -27,7 +27,7 @@ namespace beerOfThings.Controllers
             return View(histories);
         }
 
-        public IActionResult Current()
+        public async Task<IActionResult> Current()
         {
            
             int recipeId = Request.Cookies["recipe"] == null ? 0 : int.Parse(Request.Cookies["recipe"]);
@@ -37,9 +37,9 @@ namespace beerOfThings.Controllers
                 NotFound();
             }
 
-            List<Brewing> brewing = _context.Brewings.Include(b => b.Stage).Where(b => b.RecipeId == recipeId).ToList();
+            List<Brewing> brewing = await  _context.Brewings.Include(b => b.Stage).Where(b => b.RecipeId == recipeId).ToListAsync();
 
-            Recipe recipe = _context.Recipes.FirstOrDefault(r => r.Id == recipeId);
+            Recipe recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == recipeId);
             
             if (recipe == null) 
             {

@@ -6,11 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using beerOfThings.Models;
+<<<<<<< HEAD
 using beerOfThings.ViewModels;
 
+=======
+using beerOfThings.Controllers.Interfaces;
+>>>>>>> 75a46e93a10837bf6b2548aba083778c1c80f5e8
 namespace beerOfThings.Controllers
 {
-    public class IngredientsController : Controller
+    public class IngredientsController : Controller, IIngredientsController
     {
         private readonly BeerOfThingsContext _context;
 
