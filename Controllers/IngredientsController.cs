@@ -11,9 +11,9 @@ namespace beerOfThings.Controllers
 {
     public class IngredientsController : Controller
     {
-        private readonly beerOfThingsContext _context;
+        private readonly BeerOfThingsContext _context;
 
-        public IngredientsController(beerOfThingsContext context)
+        public IngredientsController(BeerOfThingsContext context)
         {
             _context = context;
         }

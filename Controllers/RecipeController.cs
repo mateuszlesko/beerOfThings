@@ -12,9 +12,9 @@ namespace beerOfThings.Controllers
 {
     public class RecipeController : Controller
     {
-        private readonly beerOfThingsContext _context;
+        private readonly BeerOfThingsContext _context;
 
-        public RecipeController(beerOfThingsContext context)
+        public RecipeController(BeerOfThingsContext context)
         {
             _context = context;
         }
@@ -114,7 +114,7 @@ namespace beerOfThings.Controllers
 
             RecipeIngredientVM ingredientVM = new RecipeIngredientVM();
             ingredientVM.SetIngredientsList(await _context.Ingredients.ToListAsync());
-           // ingredientVM. = await _context.Recipes.Where(recipe => recipe.Id == recipeId).FirstOrDefaultAsync();
+            ingredientVM.SetRecipeName((await _context.Recipes.Where(recipe => recipe.Id == recipeId).FirstOrDefaultAsync()).Name);
 
             return View(ingredientVM);
         }

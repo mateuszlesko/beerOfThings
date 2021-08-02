@@ -1,9 +1,13 @@
-﻿#nullable disable
+﻿using System;
+using System.Collections.Generic;
+
+#nullable disable
 
 namespace beerOfThings.Models
 {
     public partial class IngredientsList
     {
+        public int Id { get; set; }
         public int? RecipeId { get; set; }
         public int? IngredientId { get; set; }
         public double? Amount { get; set; }

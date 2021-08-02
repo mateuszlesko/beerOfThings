@@ -9,14 +9,17 @@ namespace beerOfThings.Models
     {
         public Stage()
         {
-            Temperatures = new HashSet<Temperature>();
+            Brewings = new HashSet<Brewing>();
+            TemperatureProbes = new HashSet<TemperatureProbe>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public int? Minutes { get; set; }
+        public string Description { get; set; }
+        public int Minutes { get; set; }
         public int? OptimalTemperature { get; set; }
 
-        public virtual ICollection<Temperature> Temperatures { get; set; }
+        public virtual ICollection<Brewing> Brewings { get; set; }
+        public virtual ICollection<TemperatureProbe> TemperatureProbes { get; set; }
     }
 }

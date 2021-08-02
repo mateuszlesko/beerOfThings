@@ -12,9 +12,9 @@ namespace beerOfThings.Controllers
 {
     public class ProcessController : Controller
     {
-        beerOfThingsContext _context;
+        private BeerOfThingsContext _context;
 
-        public ProcessController(beerOfThingsContext context) 
+        public ProcessController(BeerOfThingsContext context) 
         {
             _context = context;
         }

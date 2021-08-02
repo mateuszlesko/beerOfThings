@@ -9,13 +9,16 @@ namespace beerOfThings.Models
     {
         public WarmingHistory()
         {
-            Temperatures = new HashSet<Temperature>();
+            TemperatureProbes = new HashSet<TemperatureProbe>();
         }
 
         public int Id { get; set; }
         public int? RecipeId { get; set; }
+        public int? ProfileId { get; set; }
+        public DateTime? WarmingDate { get; set; }
 
+        public virtual Profile Profile { get; set; }
         public virtual Recipe Recipe { get; set; }
-        public virtual ICollection<Temperature> Temperatures { get; set; }
+        public virtual ICollection<TemperatureProbe> TemperatureProbes { get; set; }
     }
 }
