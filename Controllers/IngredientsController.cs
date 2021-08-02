@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using beerOfThings.Models;
+using beerOfThings.ViewModels;
 
 namespace beerOfThings.Controllers
 {
@@ -39,7 +40,14 @@ namespace beerOfThings.Controllers
                 return NotFound();
             }
 
-            return View(ingredient);
+            List<IngredientsList> ingredientsList = await _context.IngredientsLists.Include(i => i.Recipe).Where(recipe => recipe.IngredientId == id).ToListAsync();
+
+            List<Recipe> recipes = (from list in ingredientsList select list.Recipe).ToList<Recipe>();
+
+            IngredientDetailsVM detailsVM = new IngredientDetailsVM() { ingredient = ingredient, recipes = recipes};
+
+
+            return View(detailsVM);
         }
 
         // GET: Ingredients/Create

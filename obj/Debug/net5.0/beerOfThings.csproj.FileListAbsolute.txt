@@ -502,3 +502,4 @@ C:\Users\mateusz\source\repos\LeśkoMateuszBazaDanychProjekt\LeśkoMateuszBazaDa
 C:\Users\mateusz\source\repos\LeśkoMateuszBazaDanychProjekt\LeśkoMateuszBazaDanychProjekt\beerOfThings\obj\Debug\net5.0\ref\beerOfThings.dll
 C:\Users\mateusz\source\repos\LeśkoMateuszBazaDanychProjekt\LeśkoMateuszBazaDanychProjekt\beerOfThings\obj\Debug\net5.0\beerOfThings.pdb
 C:\Users\mateusz\source\repos\LeśkoMateuszBazaDanychProjekt\LeśkoMateuszBazaDanychProjekt\beerOfThings\obj\Debug\net5.0\beerOfThings.genruntimeconfig.cache
+C:\Users\mateusz\source\repos\LeśkoMateuszBazaDanychProjekt\LeśkoMateuszBazaDanychProjekt\beerOfThings\obj\Debug\net5.0\beerOfThings.csproj.AssemblyReference.cache
