@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using beerOfThings.ViewModels;
 using beerOfThings.Models;
 using beerOfThings.Helpers;
+using beerOfThings.Entities;
 using beerOfThings.Controllers.Interfaces;
 
 namespace beerOfThings.Controllers
@@ -19,12 +19,14 @@ namespace beerOfThings.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = Role.AdminOrBearer)]
         public IActionResult MoveNext()
         {
 
             return View();
         }
 
+        [Authorize(Roles = Role.AdminOrBearer)]
         public async Task<IActionResult> Create() 
         {
             StageCreationVM creationVM = new StageCreationVM();
@@ -35,6 +37,7 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.AdminOrBearer)]
         public async Task<IActionResult> Create([Bind("StageName,Minutes,Temperature")] StageCreationVM stageCreationVM) 
         {
 
@@ -67,8 +70,8 @@ namespace beerOfThings.Controllers
             return RedirectToAction("MoveNext");
         }
 
-       
 
+        [Authorize(Roles = Role.AdminOrBearer)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,6 +89,7 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.AdminOrBearer)]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("Id,Name,Minutes,OptimalTemperature")] Stage stage)
         {
