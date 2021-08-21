@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using beerOfThings.Models;
-using beerOfThings.Entities;
 
 namespace beerOfThings.Controllers
 {
@@ -28,7 +27,6 @@ namespace beerOfThings.Controllers
             return View(histories);
         }
 
-        [Authorize(Roles = Role.AdminOrBearer)]
         public async Task<IActionResult> Current()
         {
            
@@ -61,7 +59,6 @@ namespace beerOfThings.Controllers
             return View(process);
         }
 
-        [Authorize(Roles = Role.AdminOrBearer)]
         public IActionResult Next() 
         {
             int current = System.Convert.ToInt32(Request.Cookies["currentState"]);
@@ -73,7 +70,6 @@ namespace beerOfThings.Controllers
             return RedirectToAction("Current");
         }
 
-        [Authorize(Roles = Role.AdminOrBearer)]
         public IActionResult Previous()
         {
             int current = System.Convert.ToInt32(Request.Cookies["currentState"]);
@@ -85,7 +81,6 @@ namespace beerOfThings.Controllers
             return RedirectToAction("Current");
         }
 
-        [Authorize(Roles = Role.AdminOrBearer)]
         public async Task<ActionResult> Create() 
         {
             ViewBag.Recipes = await _context.Recipes.ToListAsync();
@@ -94,7 +89,6 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = Role.AdminOrBearer)]
         public async Task<IActionResult> Create([Bind("RecipeId")] WarmingHistory warming) 
         {
             _context.WarmingHistories.Add(warming);

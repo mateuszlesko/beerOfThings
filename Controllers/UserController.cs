@@ -6,6 +6,8 @@ using beerOfThings.ViewModels;
 using beerOfThings.Models;
 using beerOfThings.Helpers;
 using beerOfThings.Entities;
+using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace beerOfThings.Controllers
 {
@@ -74,6 +76,12 @@ namespace beerOfThings.Controllers
             };
 
             SessionHelper.SetObjectAsJson(HttpContext.Session, "userAuthSession", userSession);
+
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name ,profile.Id.ToString()),
+                new Claim(ClaimTypes.Role,"User")
+            };
 
             return RedirectToAction("Index","Home");
         }

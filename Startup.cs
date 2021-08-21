@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +31,15 @@ namespace beerOfThings
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromHours(8);// usatwione na tyle ile trwa dzien roboczy   
             });
+
+            services.AddAuthentication(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie( options =>
+                {
+                    options.Cookie.Name = "UserSession";
+                    options.LoginPath = "/Login/Index";
+                    options.SlidingExpiration = true;
+                });
+
             //singleton = objects are the same for every obejct and every request
             //scoped = objects are the same with a request but diffrent across different requests
             //transient = new objects are created with every request
@@ -40,8 +48,8 @@ namespace beerOfThings
             _ = services.AddScoped<IIngredientsController, IngredientsController>();
             _ = services.AddTransient<IRecipeController, RecipeController>();
             _ = services.AddTransient<IStageController, StageController>();
+            
             services.AddDbContext<beerOfThings.Models.BeerOfThingsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,9 +69,16 @@ namespace beerOfThings
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseCookiePolicy();
+
+            var cookiePolicyOptions = new CookiePolicyOptions()
+            {
+                MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Strict,
+                HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always,
+                Secure = Microsoft.AspNetCore.Http.CookieSecurePolicy.None
+            };
+
+            app.UseCookiePolicy(cookiePolicyOptions);
             app.UseSession();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
