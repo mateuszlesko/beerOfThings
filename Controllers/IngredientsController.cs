@@ -52,7 +52,6 @@ namespace beerOfThings.Controllers
         }
 
         // GET: Ingredients/Create
-        [Authorize(Roles = Role.AdminOrBearer)]
         public IActionResult Create()
         {
             return View();
@@ -62,7 +61,6 @@ namespace beerOfThings.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = Role.AdminOrBearer)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Ingredient ingredient)
         {

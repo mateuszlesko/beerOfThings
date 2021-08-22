@@ -8,47 +8,34 @@ namespace beerOfThings.Helpers
 {
     public static class HashingHelper
     {
-        public static HashedPassword hashPassword(string password)
+
+        private static int InterationNumber = 10000;
+        private static int HashNumber = 64;
+
+        public static string GenerateSalt()
         {
-            byte[] salt = new byte[128 / 8];
-            using(var rng = RandomNumberGenerator.Create())
+            var saltBytes = new byte[HashNumber];
+
+            using (RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider())
             {
-                rng.GetBytes(salt);
+                provider.GetNonZeroBytes(saltBytes);
             }
-            HashedPassword hashed = new HashedPassword();
-            hashed.Salt = Convert.ToBase64String(salt);
-            hashed.Hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt:salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount:10000,
-                numBytesRequested : 256 / 8
-                ));
-            
-            return hashed;
+
+            return Convert.ToBase64String(saltBytes);
+        }
+
+        public static string HashPassword(string password, string salt)
+        {
+            byte[] saltBytes = Convert.FromBase64String(salt);
+            using (Rfc2898DeriveBytes rfc = new Rfc2898DeriveBytes(password, saltBytes, InterationNumber))
+            {
+                return Convert.ToBase64String(rfc.GetBytes(HashNumber));
+            }
         }
 
         public static bool Match(string password1,string password2, string salt)
         {
-          byte[] bytes = Encoding.ASCII.GetBytes(salt);
-            
-            string hashed1 = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password1,
-                salt: bytes,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8
-                ));
-
-            string hashed2 = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-              password: password1,
-              salt: bytes,
-              prf: KeyDerivationPrf.HMACSHA256,
-              iterationCount: 10000,
-              numBytesRequested: 256 / 8
-              ));
-
-            return hashed1.Equals(hashed2);
+            return password1.Equals(HashPassword(password2, salt));
         }
     }
 }

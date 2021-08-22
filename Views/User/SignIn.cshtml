@@ -1,27 +1,27 @@
 ﻿@model beerOfThings.Models.AuthenticateModel
-
-<h1>Stwórz konto:</h1>
+<h1>Zaloguj się:</h1>
 
 <div class="row">
     <div class="col-md-4">
 
-        <p style="color=red;">@ViewBag.ErrorMessage</p>
-        <form asp-action="SignUp">
+        <p style="color:red;">@ViewBag.ErrorMessage</p>
+
+        <form asp-action="SignIn">
             <div class="form-group">
                 <label asp-for="Nickname" class="control-label"></label>
                 <input asp-for="Nickname" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input  type = "password" asp-for="Password" class="form-control" />
+                <input type="password" asp-for="Password" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Password2" class="control-label"></label>
-                <input  type = "password" asp-for="Password2" class="form-control" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Stwórz" class="btn btn-primary" />
+                <input type="submit" value="Zaloguj" class="btn btn-primary" />
             </div>
         </form>
     </div>
+    <div>
+        <a href="/User/SignUp">Stwórz konto</a>
+    </div>
 </div>
+

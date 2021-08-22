@@ -8,11 +8,13 @@ using beerOfThings.Helpers;
 using beerOfThings.Entities;
 using System.Security.Claims;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace beerOfThings.Controllers
 {
-    [Authorize]
-    [Route("[controller]")]
+    
     public class UserController : Controller
     {
         private readonly BeerOfThingsContext _context;
@@ -22,6 +24,7 @@ namespace beerOfThings.Controllers
             _context = context;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -33,9 +36,9 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
-        public IActionResult SignUp([FromBody] AuthenticateModel model) {
+        public async Task<IActionResult> SignUp([Bind("Nickname,Password,Password2")] AuthenticateModel model) {
 
-            if (_context.Profiles.Any(profile => profile.Nick.Equals(model.Nickname)))
+            if (await _context.Profiles.AnyAsync(profile => profile.Nick.Equals(model.Nickname)))
             {
                 ViewBag.ErrorMessage = "Nickname zajęty";
                 return RedirectToAction("SignUp");
@@ -47,12 +50,13 @@ namespace beerOfThings.Controllers
                 return RedirectToAction("SignUp");
             }
 
-            HashedPassword hashed = HashingHelper.hashPassword(model.Password);
+            string salt = HashingHelper.GenerateSalt();
+            string hashed =  HashingHelper.HashPassword(model.Password,salt);
 
             Password password = new Password()
             {
-                HashedPassword = hashed.Hashed,
-                Salt = hashed.Salt
+                HashedPassword = hashed,
+                Salt = salt
             };
             _context.Add(password);
 
@@ -66,7 +70,7 @@ namespace beerOfThings.Controllers
 
             _context.Add(profile);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             UserSession userSession = new UserSession()
             {
@@ -77,36 +81,72 @@ namespace beerOfThings.Controllers
 
             SessionHelper.SetObjectAsJson(HttpContext.Session, "userAuthSession", userSession);
 
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name ,profile.Id.ToString()),
-                new Claim(ClaimTypes.Role,"User")
-            };
+            CreateIdentityClaim(profile);
 
             return RedirectToAction("Index","Home");
         }
 
-        public IActionResult SignIn([FromBody] AuthenticateModel model)
+        [Authorize(Policy = "Claim.Role")]
+        public string TEST()
+        {
+            return "Test";
+        }
+
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SignIn([Bind("Nickname,Password")] AuthenticateModel model)
         {
             Profile user = _context.Profiles.Include(profile => profile.Password).Where(user => user.Nick == model.Nickname).FirstOrDefault();
-           
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = "Konto nie istnieje";
+                return RedirectToAction("SignIn");
+            }
+
+
+            if (HashingHelper.Match(user.Password.HashedPassword, model.Password, user.Password.Salt))
+            {
+
+                UserSession userSession = new UserSession()
+                {
+                    Id = user.Id,
+                    Role = user.Occupation
+                };
+
+                CreateIdentityClaim(user);
+
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "userAuthSession", userSession);
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewBag.ErrorMessage = "Nie udało się zalogować";
+            return RedirectToAction("SignIn");
+        }
+
+        public IActionResult LogOut()
+        {
+            Response.Cookies.Append("IdentityAuth", "", new Microsoft.AspNetCore.Http.CookieOptions() { Expires = System.DateTime.Now.AddHours(-8) });
 
             return RedirectToAction("Index", "Home");
         }
 
-        private void CreateAuthSession(Profile profile, AuthenticateModel model) 
+        private void CreateIdentityClaim(Profile user)
         {
-            bool isMatch = HashingHelper.Match(model.Password, profile.Password.HashedPassword, profile.Password.Salt);
-            if (isMatch)
-            {
-                UserSession userSession = new UserSession()
+            var claims = new List<Claim>()
                 {
-                    Id = profile.Id,
-                    Role = profile.Occupation
+                    new Claim(ClaimTypes.Name,"Identity"),
+                    new Claim(ClaimTypes.Role,user.Occupation),
+                    new Claim("UId",user.Id.ToString()),
                 };
 
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "userAuthSession", userSession);
-            }
+            var userIdentityClaims = new ClaimsIdentity(claims, "User Identity");
+            var userPrincipal = new ClaimsPrincipal(new[] { userIdentityClaims });
+            HttpContext.SignInAsync(userPrincipal);
         }
     }
 }

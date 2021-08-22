@@ -1,16 +1,15 @@
-using System;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using beerOfThings.Controllers;
 using beerOfThings.Controllers.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using beerOfThings.AuthorizationRequirments;
+using System.Security.Claims;
 
 namespace beerOfThings
 {
@@ -26,30 +25,41 @@ namespace beerOfThings
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+           
+
+            services.AddDbContext<beerOfThings.Models.BeerOfThingsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+           
+            services.AddAuthentication("CookieAuth").AddCookie("CookieAuth", config =>
+             {
+                 config.Cookie.Name = "IdentityAuth";
+                 config.LoginPath = "/User/SignIn";
+             });
+
+            services.AddAuthorization(options =>
+             {
+                 options.AddPolicy("Claim.Role", policyBuilder =>
+                 {
+                     policyBuilder.AddRequirements(new OwnRequireClaim(ClaimTypes.Role));
+                 });
+
+               
+             });
 
             services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromHours(8);// usatwione na tyle ile trwa dzien roboczy   
+                options.IdleTimeout = System.TimeSpan.FromHours(8);// usatwione na tyle ile trwa dzien roboczy   
             });
-
-            services.AddAuthentication(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie( options =>
-                {
-                    options.Cookie.Name = "UserSession";
-                    options.LoginPath = "/Login/Index";
-                    options.SlidingExpiration = true;
-                });
 
             //singleton = objects are the same for every obejct and every request
             //scoped = objects are the same with a request but diffrent across different requests
             //transient = new objects are created with every request
 
+            _ = services.AddScoped<IAuthorizationHandler, OwnRequireClaimHandler>();
             _ = services.AddScoped<ICategoriesController, CategoriesController>();
             _ = services.AddScoped<IIngredientsController, IngredientsController>();
             _ = services.AddTransient<IRecipeController, RecipeController>();
             _ = services.AddTransient<IStageController, StageController>();
-            
-            services.AddDbContext<beerOfThings.Models.BeerOfThingsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,10 +75,12 @@ namespace beerOfThings
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             var cookiePolicyOptions = new CookiePolicyOptions()
             {
@@ -78,8 +90,9 @@ namespace beerOfThings
             };
 
             app.UseCookiePolicy(cookiePolicyOptions);
+            
             app.UseSession();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
