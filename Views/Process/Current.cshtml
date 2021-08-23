@@ -20,6 +20,14 @@
         <p>
             <span>Czas : @Model.brewing[current].Stage.Minutes minut</span>
         </p>
+
+        <div>
+            <h4>Proces zakończy się za:</h4>
+            <p id="countdown"></p>
+
+        </div>
+
+
         <a class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="/Process/Previous">Poprzedni</a>
         <a class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"href="/Process/Next"> Dalej </a>
     }
@@ -36,6 +44,25 @@
 <canvas id="line-chart" width="800" height="450"></canvas>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script>
+    let end = @Model.brewing[current].Stage.Minutes * 60000;
+    let now = new Date().getTime();
+    let breakPoint = new Date(now + end).getTime();
+    var countdown = setInterval(function () {
+        now = new Date().getTime();
+        let distance = breakPoint - now;
+        console.log(distance);
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML = minutes + " min " + seconds+" s"
+
+        if (distance < 0) {
+            clearInterval(countdown);
+            document.getElementById("countdown").innerHTML = "Skończony, przejdź do następnego etapu";
+        }
+    }, 1000);
+
+
     losowo = new Array();
     for (var i = 0; i < 10; i++) {
         losowo.push(Math.round(Math.random() * 80));

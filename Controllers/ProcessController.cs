@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using beerOfThings.Models;
-using System.Net;
-using Microsoft.AspNetCore.Http;
 
 namespace beerOfThings.Controllers
 {
@@ -19,7 +19,7 @@ namespace beerOfThings.Controllers
             _context = context;
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index() 
         {
             IEnumerable<WarmingHistory> histories = await _context.WarmingHistories.Include(history => history.Recipe).ToListAsync();

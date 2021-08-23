@@ -1,11 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
 namespace beerOfThings.Models
 {
+    //IdentityDbContext = contains all tables and identity features
     public partial class BeerOfThingsContext : DbContext
     {
         public BeerOfThingsContext()
@@ -30,7 +30,7 @@ namespace beerOfThings.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-         
+          
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -97,12 +97,12 @@ namespace beerOfThings.Models
                 entity.ToTable("Password");
 
                 entity.Property(e => e.HashedPassword)
-                    .HasMaxLength(56)
+                    .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("hashedPassword");
 
                 entity.Property(e => e.Salt)
-                    .HasMaxLength(56)
+                    .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("salt");
             });
@@ -128,7 +128,6 @@ namespace beerOfThings.Models
                 entity.HasOne(d => d.Password)
                     .WithMany(p => p.Profiles)
                     .HasForeignKey(d => d.PasswordId)
-                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Profile_Password");
             });
 
