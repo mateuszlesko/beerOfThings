@@ -52,6 +52,7 @@ namespace beerOfThings.Controllers
         }
 
         // GET: Ingredients/Create
+        [Authorize(Policy = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -61,6 +62,7 @@ namespace beerOfThings.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Ingredient ingredient)
         {
@@ -74,7 +76,7 @@ namespace beerOfThings.Controllers
         }
 
         // GET: Ingredients/Edit/5
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -94,7 +96,7 @@ namespace beerOfThings.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = Role.Admin)]
+        [Authorize(Policy = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Ingredient ingredient)
         {
@@ -127,7 +129,7 @@ namespace beerOfThings.Controllers
         }
 
         // GET: Ingredients/Delete/5
-        [Authorize(Roles = Role.Admin)]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,7 +150,7 @@ namespace beerOfThings.Controllers
         // POST: Ingredients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = Role.Admin)]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ingredient = await _context.Ingredients.FindAsync(id);

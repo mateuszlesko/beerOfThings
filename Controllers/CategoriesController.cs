@@ -44,7 +44,7 @@ namespace beerOfThings.Controllers
             return View(category);
         }
 
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         // GET: Categories/Create
         public IActionResult Create()
         {
@@ -55,7 +55,7 @@ namespace beerOfThings.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
         {
@@ -69,7 +69,7 @@ namespace beerOfThings.Controllers
         }
 
         // GET: Categories/Edit/5
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,7 +89,7 @@ namespace beerOfThings.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
         {
@@ -122,7 +122,7 @@ namespace beerOfThings.Controllers
         }
 
         // GET: Categories/Delete/5
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,7 +142,7 @@ namespace beerOfThings.Controllers
 
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

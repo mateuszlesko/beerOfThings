@@ -10,6 +10,7 @@ using beerOfThings.Controllers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using beerOfThings.AuthorizationRequirments;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace beerOfThings
 {
@@ -33,6 +34,7 @@ namespace beerOfThings
              {
                  config.Cookie.Name = "IdentityAuth";
                  config.LoginPath = "/User/SignIn";
+                 config.AccessDeniedPath = "/User/AccessDenied";
              });
 
             services.AddAuthorization(options =>
@@ -41,7 +43,10 @@ namespace beerOfThings
                  {
                      policyBuilder.AddRequirements(new OwnRequireClaim(ClaimTypes.Role));
                  });
-
+                 options.AddPolicy("Admin", policyBuilder =>
+                  {
+                      policyBuilder.RequireClaim(ClaimTypes.Role, "Admin");
+                  });
                
              });
 

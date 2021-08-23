@@ -2,14 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using beerOfThings.ViewModels;
 using beerOfThings.Models;
 using beerOfThings.Helpers;
 using beerOfThings.Entities;
 using System.Security.Claims;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace beerOfThings.Controllers
@@ -86,7 +84,7 @@ namespace beerOfThings.Controllers
             return RedirectToAction("Index","Home");
         }
 
-        [Authorize(Policy = "Claim.Role")]
+        [Authorize(Policy = "Admin")]
         public string TEST()
         {
             return "Test";
@@ -133,6 +131,11 @@ namespace beerOfThings.Controllers
             Response.Cookies.Append("IdentityAuth", "", new Microsoft.AspNetCore.Http.CookieOptions() { Expires = System.DateTime.Now.AddHours(-8) });
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
         private void CreateIdentityClaim(Profile user)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using beerOfThings.Models;
 using beerOfThings.Entities;
 using beerOfThings.ViewModels;
@@ -50,7 +51,7 @@ namespace beerOfThings.Controllers
             return View(indexVM);
         }
 
-      //  [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -80,7 +81,7 @@ namespace beerOfThings.Controllers
         }
 
         //GET: Recipe/Create
-        //[Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create()
         {
             RecipeCreationVM recipeCreation = new RecipeCreationVM();
@@ -89,7 +90,7 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public IActionResult Create([Bind("Name,CategoryId")] RecipeCreationVM creationVM ) 
         {
           
@@ -106,7 +107,7 @@ namespace beerOfThings.Controllers
             return RedirectToAction("AddIngredientToRecipe");
         }
 
-        //[Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> AddIngredientToRecipe() 
         {
 
@@ -125,7 +126,7 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> AddIngredientToRecipe([Bind("IngredientId,Amount,Entity")] RecipeIngredientVM ingredientVM)
         {
             int recipeId = SessionHelper.GetObjectFromJson<int>(HttpContext.Session, "CreatedRecipeId");
@@ -158,7 +159,7 @@ namespace beerOfThings.Controllers
             return RedirectToAction("MoveToRecipeStage", recipe);
         }
 
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public IActionResult MoveToRecipeStage(Recipe recipe)
         {
             return View(recipe);

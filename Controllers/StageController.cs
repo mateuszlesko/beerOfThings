@@ -19,14 +19,14 @@ namespace beerOfThings.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public IActionResult MoveNext()
         {
 
             return View();
         }
 
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create() 
         {
             StageCreationVM creationVM = new StageCreationVM();
@@ -37,7 +37,7 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create([Bind("StageName,Minutes,Temperature")] StageCreationVM stageCreationVM) 
         {
 
@@ -71,7 +71,7 @@ namespace beerOfThings.Controllers
         }
 
 
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,7 +89,7 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = Role.AdminOrBearer)]
+        [Authorize(Policy = "Admin")]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("Id,Name,Minutes,OptimalTemperature")] Stage stage)
         {
