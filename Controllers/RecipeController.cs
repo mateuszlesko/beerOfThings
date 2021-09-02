@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
 using beerOfThings.Models;
-using beerOfThings.Entities;
 using beerOfThings.ViewModels;
 using beerOfThings.Helpers;
 using beerOfThings.Controllers.Interfaces;
@@ -51,7 +48,6 @@ namespace beerOfThings.Controllers
             return View(indexVM);
         }
 
-        [Authorize(Policy = "Admin")]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -70,6 +66,8 @@ namespace beerOfThings.Controllers
             List<IngredientsList> ingredientsList = await _context.IngredientsLists.Include(Ingredient => Ingredient.Ingredient).Where(list => list.RecipeId == id).ToListAsync();
             List<Brewing> brewingList = await _context.Brewings.Include(Stage => Stage.Stage).Where(brewing => brewing.RecipeId == id).ToListAsync();
 
+
+
             RecipeFullDetailsViewModel recipeFullDetails = new RecipeFullDetailsViewModel()
             {
                 recipe = recipe,
@@ -81,7 +79,6 @@ namespace beerOfThings.Controllers
         }
 
         //GET: Recipe/Create
-        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create()
         {
             RecipeCreationVM recipeCreation = new RecipeCreationVM();
@@ -90,7 +87,6 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
         public IActionResult Create([Bind("Name,CategoryId")] RecipeCreationVM creationVM ) 
         {
           
@@ -107,7 +103,6 @@ namespace beerOfThings.Controllers
             return RedirectToAction("AddIngredientToRecipe");
         }
 
-        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> AddIngredientToRecipe() 
         {
 
@@ -126,7 +121,6 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> AddIngredientToRecipe([Bind("IngredientId,Amount,Entity")] RecipeIngredientVM ingredientVM)
         {
             int recipeId = SessionHelper.GetObjectFromJson<int>(HttpContext.Session, "CreatedRecipeId");
@@ -159,7 +153,7 @@ namespace beerOfThings.Controllers
             return RedirectToAction("MoveToRecipeStage", recipe);
         }
 
-        [Authorize(Policy = "Admin")]
+
         public IActionResult MoveToRecipeStage(Recipe recipe)
         {
             return View(recipe);
