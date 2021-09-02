@@ -8,6 +8,7 @@ using beerOfThings.Models;
 using beerOfThings.ViewModels;
 using beerOfThings.Helpers;
 using beerOfThings.Controllers.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace beerOfThings.Controllers
 {
@@ -48,6 +49,7 @@ namespace beerOfThings.Controllers
             return View(indexVM);
         }
 
+        [Authorize(Policy = "Admin")]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -79,6 +81,7 @@ namespace beerOfThings.Controllers
         }
 
         //GET: Recipe/Create
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create()
         {
             RecipeCreationVM recipeCreation = new RecipeCreationVM();
@@ -87,6 +90,7 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         public IActionResult Create([Bind("Name,CategoryId")] RecipeCreationVM creationVM ) 
         {
           
@@ -103,6 +107,7 @@ namespace beerOfThings.Controllers
             return RedirectToAction("AddIngredientToRecipe");
         }
 
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> AddIngredientToRecipe() 
         {
 
@@ -121,6 +126,7 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> AddIngredientToRecipe([Bind("IngredientId,Amount,Entity")] RecipeIngredientVM ingredientVM)
         {
             int recipeId = SessionHelper.GetObjectFromJson<int>(HttpContext.Session, "CreatedRecipeId");
@@ -153,7 +159,7 @@ namespace beerOfThings.Controllers
             return RedirectToAction("MoveToRecipeStage", recipe);
         }
 
-
+        [Authorize(Policy = "Admin")]
         public IActionResult MoveToRecipeStage(Recipe recipe)
         {
             return View(recipe);
