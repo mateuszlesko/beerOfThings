@@ -27,6 +27,7 @@ namespace beerOfThings.Controllers
             return View(histories);
         }
 
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Current()
         {
            
@@ -59,6 +60,7 @@ namespace beerOfThings.Controllers
             return View(process);
         }
 
+        [Authorize(Policy = "Admin")]
         public IActionResult Next() 
         {
             int current = System.Convert.ToInt32(Request.Cookies["currentState"]);
@@ -70,6 +72,7 @@ namespace beerOfThings.Controllers
             return RedirectToAction("Current");
         }
 
+        [Authorize(Policy = "Admin")]
         public IActionResult Previous()
         {
             int current = System.Convert.ToInt32(Request.Cookies["currentState"]);
@@ -81,6 +84,7 @@ namespace beerOfThings.Controllers
             return RedirectToAction("Current");
         }
 
+        [Authorize(Policy = "Admin")]
         public async Task<ActionResult> Create() 
         {
             ViewBag.Recipes = await _context.Recipes.ToListAsync();
@@ -89,6 +93,7 @@ namespace beerOfThings.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create([Bind("RecipeId")] WarmingHistory warming) 
         {
             _context.WarmingHistories.Add(warming);
