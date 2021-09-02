@@ -4,6 +4,13 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="wwwroot\Nowy folder\**" />
+    <Content Remove="wwwroot\Nowy folder\**" />
+    <EmbeddedResource Remove="wwwroot\Nowy folder\**" />
+    <None Remove="wwwroot\Nowy folder\**" />
+  </ItemGroup>
+
    <ItemGroup>
         <UpToDateCheckBuilt Include="postcss.config.js" Set="Css" />
         <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
@@ -11,7 +18,6 @@
 
    <ItemGroup>
      <Folder Include="ViewModels\User\" />
-     <Folder Include="wwwroot\Nowy folder\" />
    </ItemGroup>
 
    <ItemGroup>

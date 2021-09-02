@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
 using beerOfThings.Models;
-using beerOfThings.Entities;
 using beerOfThings.ViewModels;
 using beerOfThings.Helpers;
 using beerOfThings.Controllers.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace beerOfThings.Controllers
 {
@@ -69,6 +67,8 @@ namespace beerOfThings.Controllers
 
             List<IngredientsList> ingredientsList = await _context.IngredientsLists.Include(Ingredient => Ingredient.Ingredient).Where(list => list.RecipeId == id).ToListAsync();
             List<Brewing> brewingList = await _context.Brewings.Include(Stage => Stage.Stage).Where(brewing => brewing.RecipeId == id).ToListAsync();
+
+
 
             RecipeFullDetailsViewModel recipeFullDetails = new RecipeFullDetailsViewModel()
             {

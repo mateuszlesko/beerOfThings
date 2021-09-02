@@ -1,8 +1,140 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Strona główna";
 }
-
-<div class="text-center">
-    <h1 class="py-2">Welcome</h1>
-    <p class="py-6">Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="mb-4 md:mb-0 w-full max-w-screen-md mx-auto relative" style="height: 24em;">
+    <div class="absolute left-0 bottom-0 w-full h-full z-10"
+         style="background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.7));"></div>
+    <img src="/img/alcohol-beer-brewery-interior-view-brewhouse-brasserie-puteaux-paris-B42R4X.jpg" class="absolute left-0 top-0 w-full h-full z-0 object-cover" />
+    <div class="p-4 absolute bottom-0 left-0 z-20">
+        <a href="#"
+           class="px-4 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2">Nutrition</a>
+        <h2 class="text-4xl font-semibold text-gray-100 leading-tight">
+            Projekt kotła warzelnego IoT
+        </h2>
+        <div class="flex mt-3">
+            <img src="/img/alcohol-beer-brewery-interior-view-brewhouse-brasserie-puteaux-paris-B42R4X.jpg"
+                 class="h-10 w-10 rounded-full mr-2 object-cover" />
+            <div>
+                <p class="font-semibold text-gray-200 text-sm"> Mateusz Leśko </p>
+                <p class="font-semibold text-gray-400 text-xs"> 23 Sierpnia </p>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="px-4 lg:px-0 mt-12 text-gray-700 max-w-screen-md mx-auto text-lg leading-relaxed">
+    <h2 class="text-2xl text-gray-800 font-semibold mb-4 mt-4">O procesie warzenia piwa</h2>
+    <p class="pb-6">
+        Proces warzenia piwa to grzanie roztworu w ustalonej temperaturze w ustalonym czasie w celu uwolnienia się enzymów, które zamieniają cukry złożone na proste.
+        Dzięki temu drożdże mogą je przetworzyć. Podczas ważenia następuje również przyprawianie; nadanie odpowiedniej goryczy dla trunku.
+    </p>
+
+    @*<div class="border-l-4 border-gray-500 pl-4 mb-6 italic rounded">
+            Sportsman do offending supported extremity breakfast by listening. Decisively advantages nor
+            expression
+            unpleasing she led met. Estate was tended ten boy nearer seemed. As so seeing latter he should thirty whence.
+            Steepest speaking up attended it as. Made neat an on be gave show snug tore.
+        </div>*@
+
+    <p class="pb-6">
+        Exquisite cordially mr happiness of neglected distrusts. Boisterous impossible unaffected he me
+        everything.
+        Is fine loud deal an rent open give. Find upon and sent spot song son eyes. Do endeavor he differed carriage
+        is learning my graceful. Feel plan know is he like on pure. See burst found sir met think hopes are marry
+        among. Delightful remarkably new assistance saw literature mrs favourable.
+    </p>
+
+    <h2 class="text-2xl text-gray-800 font-semibold mb-4 mt-4">O projekcie</h2>
+
+    <p class="pb-6">
+        Projekt ten powstał jako zaliczenie przedmiotu baz danych.
+        Aplikacja ta ma pełnić rolę klienta, umożliwiającego kontrolę temperatury grzania piwa.
+        Funkcje aplikacji to:
+    </p>
+    <ul class="list-disc list-inside bg-rose-200 ">
+        <li>podgląd receptur</li>
+        <li>zarządzanie recepturami piwa</li>
+        <li>dodawanie nowych recpetur wraz z składnikami i temperaturami</li>
+        <li>monitorowanie procesu warzenia piwa</li>
+        <li> autenykacja i autoryzacja urzytkownika</li>
+    </ul>
+    <br />
+    <p class="pb-6">
+        Technologie które zostały użyte w projekcie to:
+    </p>
+    <ul class="list-disc list-inside bg-rose-200 ">
+        <li> .NET 5 i ASP.NET Core</li>
+        <li> ORM w postaci Entity Frawework</li>
+        <li> Baza danych: Microsoft SQL Server</li>
+    </ul>
+    <br />
+    <p class="pb-6">
+        Podjeście wykorzystane do aplikacji to database - first. Na podstawie gotowej już bazy danych ORM generuje kontekst wraz z modelami.
+    </p>
+    <h3 class="text-2xl text-gray-800 font-semibold mb-4 mt-4">Struktura bazy danych</h3>
+    <img src="/img/dbStructure.png" alt="Struktura bazy danych" />
+    <h5>Omówienie tabel:</h5>
+    <p class="pb-6">
+        <span>
+            <b>Ingredient</b>
+            Zawiera informacje o składniku (id, nazwa)
+        </span>
+        <br />
+        <span>
+            <b>Category</b>
+            Zawiera informacje o gatunku danego piwa (id, nazwa)
+        </span>
+        <br />
+        <span>
+            <b>Recipe</b>
+            Zawiera informacje o recepturze (id, nazwa, klucz obcy do gatunku piwa)
+        </span>
+        <br />
+        <span>
+            <b>IngredientsList</b>
+            Zawiera infromacje o składnikach użytych w recepturze(jednostka, ilość, klucze obce do składnika i receptury)
+        </span>
+        <br />
+        <span>
+            <b>Password</b>
+            Zawiera informcje o zahashowanym haśle użytkownika
+        </span>
+        <br />
+        <span>
+            <b>Profile</b>
+            Zawiera informacje dotyczące profilu użytkownika
+        </span>
+        <br />
+        <span>
+            <b>Stage</b>
+            Zawiera informacje o temperaturze danego etapu oraz czasie jego trwania
+        </span>
+        <br />
+        <span>
+            <b>WarmingHistory</b>
+            Zawiera informacje o historii warzenia piw
+        </span>
+        <br />
+        <span>
+            <b>TemperatureProbe</b>
+            Zawiera informacje o temperaturze pobranej z czujnika
+        </span>
+        <br />
+        <span>
+            <b>Brewing</b>
+            Zawiera infomacje o kolejno po sobie krokach warzenia danej recptury
+        </span>
+    </p>
+
+    <p class="pb-6">
+
+         (ADMIN)
+        Login: admin
+        Hasło: admin12
+        <br />
+        (User)
+        Login: default
+        Hasło: 123456
+    </p>
+</div>
+
