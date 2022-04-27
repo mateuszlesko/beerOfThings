@@ -81,23 +81,23 @@ Maintaining data integrity is an important concern with this table. For example:
 
 #### Brewing:
 The "Brewing" table stores the following data:
-● reference to the recipe (foreign key)
-● reference to the heating stage (foreign key)
+* reference to the recipe (foreign key)
+* reference to the heating stage (foreign key)
 
 It serve as the data source where the individual mash steps for
 recipes
 
 #### IngridientsList
 The Ingredients table will hold the following data:
-● reference to the recipe (foreign key)
-● link to an ingredient (foreign key)
-● amount of a given ingredient
-● unit
+* reference to the recipe (foreign key)
+* link to an ingredient (foreign key)
+* amount of a given ingredient
+* unit
 
 #### Ingredient
 The "Ingredient" table stores the following data:
-● component id (identification key)
-● ingredient name
+* component id (identification key)
+* ingredient name
 
 ### Application overview:
 The application is designed to reset the previously presented assumptions
